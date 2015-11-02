@@ -14,6 +14,23 @@ class Main extends PluginBase implements Listener{
 	public $active = array();
 	public function onEnable(){
 		$this->getServer()->getPluginManager()->registerEvents($this ,$this);
+		@mkdir($this->getDataFolder());
+@mkdir($this->getDataFolder()."Players/");	
 	}
 	
 	
+public function onPlayerLogin(PlayerPreLoginEvent $event){
+        $ign = $event->getPlayer()->getName();
+        $player = $event->getPlayer();
+        $file = ($this->getDataFolder()."Players/".$ign.".yml");  
+            if(!file_exists($file)){
+                $this->PlayerFile = new Config($this->getDataFolder()."Players/".$ign.".yml", Config::YAML);
+                $this->PlayerFile->set("Ban","false");
+                $this->PlayerFile->save();
+            }
+        }
+        
+        public function onCommand(CommandSender $sender, Command $cmd, $label, array $args) {
+
+        
+        
