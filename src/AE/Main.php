@@ -51,9 +51,9 @@ public function onCommand(CommandSender $sender, Command $cmd, $label, array $ar
                  $target->sendMessage($sender->getName()." Wants to be allys! please do /accept to accpet thier allyship request!");
                 $task = new accept($this, $target);
                 array_push($target->getName(), $this->request);
-		 	$this->getServer()->getScheduler()->scheduleDelayedTask($task, 600);
-		 	$this->queue[$target->getName()][$sender->getName()]
-		 	return true;
+		 $this->getServer()->getScheduler()->scheduleDelayedTask($task, 600);
+		 $this->queue[$target->getName()][$sender->getName()];
+		 return true;
             }
                 }else{
                 	$sender->sendMessage("Please do this command in game!");
@@ -63,7 +63,10 @@ public function onCommand(CommandSender $sender, Command $cmd, $label, array $ar
  }
  if(strtolower($cmd->getName()) === "accept") {
  if(in_array($target->getName(),$this->request)){
- 	$sender->sendMessage("Request from ".$this->queue[$target->getName()][$sender->getName()]."Accepted!");
+ 	//not sure why use ->getName() again since it not a player instance
+ 	$sender->sendMessage("Request from ".$this->queue[$target][$sender]."Accepted!");
+ 	$target = $this->getServer()->getPlayer($this->queue[$target][$sender]);
+ 	$target->sendMessage("Player ".$sender->getName()." has accepted your request! :));
  	return true;
  }else{
  	$sender->sendMessage("You have no request!");
