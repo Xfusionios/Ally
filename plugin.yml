@@ -1,0 +1,14 @@
+name: Ally
+author: savion
+version: 1.0
+main: Ally\Main
+api: [1.12.0]
+commands:
+  ally:
+    description: ally command
+    permission: ally.command.ally
+    default: true
+  accept:
+    description: ally command
+    permission: ally.command.accept
+    default: true
