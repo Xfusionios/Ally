@@ -13,7 +13,8 @@ use pocketmine\utils\Config;
 use pocketmine\command\ConsoleCommandSender;
 
 class Main extends PluginBase implements Listener{
-	public $active = array();
+	public $request = array();
+	public $queue = array();
 	public function onEnable(){
 		$this->getServer()->getPluginManager()->registerEvents($this ,$this);
 		@mkdir($this->getDataFolder());
@@ -37,6 +38,9 @@ public function onCommand(CommandSender $sender, Command $cmd, $label, array $ar
             if(isset($args[0]) && isset($args[1])){
                 $name = $args[0];
                 $target = $this->getServer()->getPlayer($name);
+                $this->TargetFile = new Config($this->getDataFolder()."Players/".$target->getName().".yml", Config::YAML);
+                $this->SenderFile = new Config($this->getDataFolder()."Players/".$sender->getName().".yml", Config::YAML);
+                
                 if($sender instanceof Player){
                 if($target === null){
                 	$sender->sendMessage("that player is not online!");
@@ -46,7 +50,9 @@ public function onCommand(CommandSender $sender, Command $cmd, $label, array $ar
                 $sender->sendMessage("Ally request sent to".$target->getName());
                  $target->sendMessage($sender->getName()." Wants to be allys! please do /accept to accpet thier allyship request!");
                 $task = new accept($this, $target);
+                array_push($target->getName(), $this->request);
 		 	$this->getServer()->getScheduler()->scheduleDelayedTask($task, 600);
+		 	$this->queue[$target->getName()][$sender->getName()]
 		 	return true;
             }
                 }else{
@@ -55,6 +61,17 @@ public function onCommand(CommandSender $sender, Command $cmd, $label, array $ar
                 }
                 }
  }
+ if(strtolower($cmd->getName()) === "accept") {
+ if(in_array($target->getName(),$this->request)){
+ 	$sender->sendMessage("Request from ".$this->queue[$target->getName()][$sender->getName()]."Accepted!");
+ 	return true;
+ }else{
+ 	$sender->sendMessage("You have no request!");
+ 	return false;
+ }
 }
+}
+}
+
             
         
